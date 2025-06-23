@@ -10,10 +10,16 @@
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
+            --primary-light: #93c5fd;
             --secondary: #f59e0b;
+            --secondary-light: #fcd34d;
             --dark: #1e293b;
+            --darker: #0f172a;
             --light: #f8fafc;
+            --lighter: #ffffff;
             --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --transition: all 0.3s ease;
         }
         
         * {
@@ -23,28 +29,89 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--dark);
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 16px auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
         
         /* Navbar Styles */
         .navbar {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: transparent;
             position: fixed;
             width: 100%;
             z-index: 1000;
-            padding: 1rem 2rem;
+            padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: var(--transition);
+        }
+        
+        .navbar.scrolled {
+            background: var(--lighter) !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px 5% !important;
+        }
+        
+        .navbar.scrolled .logo-text,
+        .navbar.scrolled .nav-links a,
+        .navbar.scrolled .hamburger i {
+            color: var(--dark) !important;
+        }
+        
+        .navbar.scrolled .logo-text span {
+            color: var(--secondary) !important;
         }
         
         .logo {
             display: flex;
             align-items: center;
+            z-index: 1001;
         }
         
         .logo img {
@@ -55,11 +122,13 @@
         .logo-text {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary);
+            color: white;
+            transition: var(--transition);
         }
         
         .logo-text span {
-            color: var(--secondary);
+            color: var(--secondary-light);
+            transition: var(--transition);
         }
         
         .nav-links {
@@ -68,35 +137,181 @@
         }
         
         .nav-links li {
+            position: relative;
             margin-left: 2rem;
         }
         
         .nav-links a {
             text-decoration: none;
-            color: var(--dark);
+            color: white;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary-light);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
         }
         
         .nav-links a:hover {
+            color: var(--secondary-light);
+        }
+        
+        .navbar.scrolled .nav-links a::after {
+            background-color: var(--primary);
+        }
+        
+        .navbar.scrolled .nav-links a:hover {
             color: var(--primary);
         }
         
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--dark);
+            z-index: 1001;
         }
         
-        /* Hero Slider */
+        .hamburger i {
+            font-size: 1.8rem;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        /* Mobile menu */
+        @media (max-width: 992px) {
+            .hamburger {
+                display: flex;
+                align-items: center;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background: var(--lighter);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-top: 80px;
+                transition: all 0.5s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 20px 0 !important;
+            }
+            
+            .nav-links a {
+                color: var(--dark) !important;
+                font-size: 1.3rem;
+            }
+            
+            .nav-links a::after {
+                background-color: var(--primary) !important;
+            }
+            
+            .navbar.scrolled .hamburger i {
+                color: var(--dark);
+            }
+        }
+        
+        /* Hero Section */
         .hero {
             height: 100vh;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
         }
         
-        .slide {
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            color: white;
+            max-width: 600px;
+            padding: 0 5%;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .hero-buttons {
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: transparent;
+            color: var(--primary-light);
+            border-color: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Background Slideshow */
+        .slide-bg {
             position: absolute;
             top: 0;
             left: 0;
@@ -106,72 +321,21 @@
             transition: opacity 1s ease-in-out;
             background-size: cover;
             background-position: center;
-            display: flex;
-            align-items: center;
-            padding: 0 10%;
+            background-repeat: no-repeat;
         }
         
-        .slide.active {
+        .slide-bg.active {
             opacity: 1;
         }
         
-        .slide::before {
+        .slide-bg::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 1;
-        }
-        
-        .slide-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            max-width: 600px;
-        }
-        
-        .slide-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        
-        .slide-content p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: 2px solid var(--primary);
-        }
-        
-        .btn:hover {
-            background: transparent;
-            color: white;
-            border-color: white;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            margin-left: 1rem;
-        }
-        
-        .btn-outline:hover {
-            background: white;
-            color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
         }
         
         /* Slider Controls */
@@ -189,81 +353,625 @@
             height: 12px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
-            margin: 0 5px;
+            margin: 0 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .slider-control.active {
             background: white;
-            transform: scale(1.2);
+            transform: scale(1.3);
+        }
+        
+        /* How It Works Section */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        
+        .step {
+            flex: 0 0 calc(33.333% - 30px);
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .step:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 25px;
+            transition: var(--transition);
+        }
+        
+        .step:hover .step-icon {
+            background: var(--secondary);
+            transform: rotateY(180deg);
+        }
+        
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .step p {
+            color: var(--gray);
+        }
+        
+        /* Job Listings */
+        .job-filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 25px;
+            margin: 5px;
+            background: white;
+            border: 1px solid var(--gray-light);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .job-header {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .job-title {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .job-company {
+            color: var(--gray);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .job-meta span {
+            background: #f1f5f9;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .job-body {
+            padding: 25px;
+        }
+        
+        .job-desc {
+            margin-bottom: 20px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        .job-footer {
+            padding: 20px;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .job-salary {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        /* Registration Form */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .form-header h3 {
+            font-size: 1.8rem;
+        }
+        
+        .form-body {
+            padding: 40px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .form-group {
+            flex: 0 0 calc(50% - 30px);
+            margin: 0 15px 25px;
+        }
+        
+        .form-group.full-width {
+            flex: 0 0 calc(100% - 30px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .testimonial {
+            flex: 0 0 calc(33.333% - 30px);
+            background: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .testimonial:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .testimonial-content {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .testimonial-content p {
+            font-style: italic;
+            color: var(--gray);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-content::before {
+            content: '"';
+            font-size: 5rem;
+            color: rgba(37, 99, 235, 0.05);
+            position: absolute;
+            top: -30px;
+            left: -15px;
+            z-index: 0;
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            border: 3px solid var(--primary-light);
+        }
+        
+        .author-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .contact-info {
+            flex: 0 0 40%;
+            padding: 50px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .contact-info h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+        
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+        
+        .info-text h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .info-text p, .info-text a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .info-text a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .contact-form {
+            flex: 0 0 60%;
+            padding: 50px;
+        }
+        
+        .contact-map {
+            height: 350px;
+            margin-top: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            color: white;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column {
+            flex: 0 0 calc(25% - 30px);
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-column p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Mobile Styles */
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: white;
-                flex-direction: column;
-                align-items: center;
-                padding-top: 2rem;
-                transition: left 0.3s ease;
+        @media (max-width: 992px) {
+            section {
+                padding: 80px 0;
             }
             
-            .nav-links.active {
-                left: 0;
+            .section-title {
+                margin-bottom: 40px;
             }
             
-            .nav-links li {
-                margin: 1rem 0;
-            }
-            
-            .hamburger {
-                display: block;
-            }
-            
-            .slide-content h1 {
+            .section-title h2 {
                 font-size: 2rem;
             }
             
-            .slide-content p {
+            .step, .testimonial, .footer-column {
+                flex: 0 0 100%;
+            }
+            
+            .form-group {
+                flex: 0 0 calc(100% - 30px);
+            }
+            
+            .contact-info, .contact-form {
+                flex: 0 0 100%;
+            }
+            
+            .contact-info {
+                padding: 40px 30px;
+            }
+            
+            .contact-form {
+                padding: 40px 30px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 70px 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
                 font-size: 1rem;
             }
             
-            .btn-container {
-                display: flex;
-                flex-direction: column;
-            }
-            
             .btn {
-                margin-bottom: 1rem;
-                text-align: center;
+                display: block;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
             }
             
-            .btn-outline {
-                margin-left: 0;
+            .job-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-column {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-column {
+                flex: 0 0 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="logo">
-            <!-- Replace with your logo -->
-            <img src="img/logo01.png" alt="Rojgar Saathi Logo">
+            <img src="img/logo02.png" alt="Rojgar Saathi Logo">
             <div class="logo-text">Rojgar <span>Saathi</span></div>
         </div>
         
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">How It Works</a></li>
-            <li><a href="#">Jobs</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+            <li><a href="#about" class="nav-link">About Us</a></li>
+            <li><a href="#jobs" class="nav-link">Jobs</a></li>
+            <li><a href="#register" class="nav-link">Register</a></li>
+            <li><a href="#testimonials" class="nav-link">Success Stories</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
         
         <div class="hamburger">
@@ -271,43 +979,22 @@
         </div>
     </nav>
     
-    <!-- Hero Slider -->
-    <section class="hero">
-        <!-- Slide 1 -->
-        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h1>Find Your Dream Job Today</h1>
-                <p>Rojgar Saathi connects you with the best opportunities tailored to your skills and experience.</p>
-                <div class="btn-container">
-                    <a href="#" class="btn">Register Now</a>
-                    <a href="#" class="btn btn-outline">Learn More</a>
-                </div>
+    <!-- Home Section -->
+    <section class="hero" id="home">
+        <!-- Static Content -->
+        <div class="hero-content">
+            <h1>Find Your Dream Job Today</h1>
+            <p>Rojgar Saathi connects you with the best opportunities tailored to your skills and experience.</p>
+            <div class="hero-buttons">
+                <a href="#register" class="btn">Register Now</a>
+                <a href="#how-it-works" class="btn btn-outline">Learn More</a>
             </div>
         </div>
         
-        <!-- Slide 2 -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h1>We Interview, We Match, You Succeed</h1>
-                <p>Our team personally interviews candidates to ensure perfect job matches.</p>
-                <div class="btn-container">
-                    <a href="#" class="btn">Get Started</a>
-                    <a href="#" class="btn btn-outline">Our Process</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Slide 3 -->
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h1>Your Career Journey Starts Here</h1>
-                <p>Join thousands who found their perfect job through Rojgar Saathi.</p>
-                <div class="btn-container">
-                    <a href="#" class="btn">Find Jobs</a>
-                    <a href="#" class="btn btn-outline">Success Stories</a>
-                </div>
-            </div>
-        </div>
+        <!-- Background Slideshow -->
+        <div class="slide-bg active" style="background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
         
         <!-- Slider Controls -->
         <div class="slider-controls">
@@ -317,70 +1004,665 @@
         </div>
     </section>
 
-    <script>
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+    <!-- How It Works Section -->
+    <section class="container" id="how-it-works">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Our simple 3-step process to connect you with the right job opportunities</p>
+        </div>
         
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.innerHTML = navLinks.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        // Slider Functionality
-        const slides = document.querySelectorAll('.slide');
-        const controls = document.querySelectorAll('.slider-control');
-        let currentSlide = 0;
-        let slideInterval;
-        
-        function showSlide(index) {
-            // Hide all slides
-            slides.forEach(slide => slide.classList.remove('active'));
-            controls.forEach(control => control.classList.remove('active'));
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h3>Register Your Profile</h3>
+                <p>Create your account and complete your profile with skills, experience, and preferences.</p>
+            </div>
             
-            // Show selected slide
-            slides[index].classList.add('active');
-            controls[index].classList.add('active');
-            currentSlide = index;
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Interview With Us</h3>
+                <p>Our team will conduct a screening interview to understand your capabilities better.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>Get Matched</h3>
+                <p>We connect you with employers that match your profile and career goals.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section style="background: #ffffff;" >
+        <div class="container"id="about">
+            <!-- Section Header -->
+            <div class="section-title">
+                <h2>Who We Are</h2>
+                <p>Rojgar Saathi is a trusted bridge between skilled professionals and ethical employers, ensuring fair opportunities through personalized matching.</p>
+            </div>
+
+            <!-- Content Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: center;">
+                <!-- Left Column - Image -->
+                <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.08);">
+                    <img 
+                        src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                        alt="Team at work" 
+                        style="width: 100%; height: auto; display: block;"
+                    >
+                </div>
+                
+                <!-- Right Column - Content -->
+                <div>
+                    <div style="background: #f8fafc; border-left: 4px solid #2563eb; padding: 25px; border-radius: 0 8px 8px 0; margin-bottom: 30px;">
+                        <h3 style="font-size: 1.4rem; color: #1e293b; margin-bottom: 10px;">Our Mission</h3>
+                        <p style="color: #64748b;">To democratize employment by connecting talent with dignity to ethical opportunities.</p>
+                    </div>
+                    
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 25px; display: flex;">
+                            <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
+                                <i class="fas fa-user-check" style="color: #2563eb; font-size: 1.2rem;"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: #1e293b; margin-bottom: 5px;">Verified Profiles</h4>
+                                <p style="color: #64748b;">Every candidate is personally interviewed.</p>
+                            </div>
+                        </li>
+                        
+                        <li style="margin-bottom: 25px; display: flex;">
+                            <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
+                                <i class="fas fa-shield-alt" style="color: #2563eb; font-size: 1.2rem;"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: #1e293b; margin-bottom: 5px;">No Fake Jobs</h4>
+                                <p style="color: #64748b;">We vet all employers thoroughly.</p>
+                            </div>
+                        </li>
+                        
+                        <li style="display: flex;">
+                            <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
+                                <i class="fas fa-rupee-sign" style="color: #2563eb; font-size: 1.2rem;"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.2rem; color: #1e293b; margin-bottom: 5px;">Always Free</h4>
+                                <p style="color: #64748b;">Zero cost for job seekers.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Job Listings Section -->
+    <section class="container" id="jobs">
+        <div class="section-title">
+            <h2>Available Jobs</h2>
+            <p>Browse through our current job openings</p>
+        </div>
+        
+        <div class="job-filters">
+            <button class="filter-btn active">All Jobs</button>
+            <button class="filter-btn">IT Sector</button>
+            <button class="filter-btn">Construction</button>
+            <button class="filter-btn">Drivers</button>
+            <button class="filter-btn">Household</button>
+        </div>
+        
+        <div class="job-list">
+            <!-- Job 1 -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3 class="job-title">Electrician</h3>
+                    <p class="job-company">Sharma Electricals</p>
+                    <div class="job-meta">
+                        <span>Full-time</span>
+                        <span>Delhi</span>
+                        <span>2+ years exp</span>
+                    </div>
+                </div>
+                <div class="job-body">
+                    <p class="job-desc">Looking for experienced electrician for residential and commercial projects. Must have own tools.</p>
+                </div>
+                <div class="job-footer">
+                    <span class="job-salary">₹18,000 - ₹25,000/mo</span>
+                    <a href="#" class="btn">Apply Now</a>
+                </div>
+            </div>
+            
+            <!-- Job 2 -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3 class="job-title">Data Entry Operator</h3>
+                    <p class="job-company">Global Solutions</p>
+                    <div class="job-meta">
+                        <span>Part-time</span>
+                        <span>Work from home</span>
+                        <span>Fresher</span>
+                    </div>
+                </div>
+                <div class="job-body">
+                    <p class="job-desc">Need computer literate candidates for data entry work. Typing speed 30+ WPM required.</p>
+                </div>
+                <div class="job-footer">
+                    <span class="job-salary">₹10,000 - ₹15,000/mo</span>
+                    <a href="#" class="btn">Apply Now</a>
+                </div>
+            </div>
+            
+            <!-- Job 3 -->
+            <div class="job-card">
+                <div class="job-header">
+                    <h3 class="job-title">Delivery Driver</h3>
+                    <p class="job-company">Quick Deliveries</p>
+                    <div class="job-meta">
+                        <span>Full-time</span>
+                        <span>Mumbai</span>
+                        <span>License required</span>
+                    </div>
+                </div>
+                <div class="job-body">
+                    <p class="job-desc">Hiring bike drivers for food delivery. Flexible shifts available. Earn up to ₹1000 per day.</p>
+                </div>
+                <div class="job-footer">
+                    <span class="job-salary">₹25,000 - ₹35,000/mo</span>
+                    <a href="#" class="btn">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="container" id="register">
+        <div class="section-title">
+            <h2>Register With Us</h2>
+            <p>Fill out this form to get started with your job search</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h3>Candidate Registration</h3>
+            </div>
+            
+            <form class="form-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullname">Full Name*</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number*</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Current Location*</label>
+                        <input type="text" id="location" name="location" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="experience">Work Experience*</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select</option>
+                            <option value="fresher">Fresher</option>
+                            <option value="1-3">1-3 years</option>
+                            <option value="3-5">3-5 years</option>
+                            <option value="5+">5+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="education">Highest Education</label>
+                        <select id="education" name="education">
+                            <option value="">Select</option>
+                            <option value="10th">10th Pass</option>
+                            <option value="12th">12th Pass</option>
+                            <option value="graduate">Graduate</option>
+                            <option value="postgraduate">Post Graduate</option>
+                            <option value="diploma">Diploma</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="skills">Your Skills* (Separate by commas)</label>
+                        <textarea id="skills" name="skills" required placeholder="e.g., Electrician, Plumbing, Data Entry, Cooking"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="preferences">Job Preferences</label>
+                        <textarea id="preferences" name="preferences" placeholder="What kind of jobs are you looking for? Any specific requirements?"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container" id="testimonials">
+        <div class="section-title">
+            <h2>Success Stories</h2>
+            <p>Hear from people who found jobs through Rojgar Saathi</p>
+        </div>
+        
+        <div class="testimonials">
+            <!-- Testimonial 1 -->
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>Rojgar Saathi helped me find a stable job as an electrician within 2 weeks of registering. The team really understands what employers are looking for.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rajesh Kumar">
+                    </div>
+                    <div class="author-info">
+                        <h4>Rajesh Kumar</h4>
+                        <p>Electrician at Sharma Electricals</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>As a single mother, I needed flexible work. Rojgar Saathi connected me with a data entry job I can do from home while taking care of my child.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Sharma">
+                    </div>
+                    <div class="author-info">
+                        <h4>Priya Sharma</h4>
+                        <p>Data Entry Operator</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>I was struggling to find work after coming to Delhi from my village. Thanks to Rojgar Saathi, I now have a good driving job with decent salary.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-img">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Amit Singh">
+                    </div>
+                    <div class="author-info">
+                        <h4>Amit Singh</h4>
+                        <p>Delivery Driver</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container" id="contact">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our team for any questions</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Address</h4>
+                        <p>123 Job Street, Employment Nagar, Delhi 110001</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Phone</h4>
+                        <p><a href="tel:+911234567890">+91 12345 67890</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Email</h4>
+                        <p><a href="mailto:info@rojgarsaathi.com">info@rojgarsaathi.com</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-text">
+                        <h4>Working Hours</h4>
+                        <p>Monday - Saturday: 9:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-name">Your Name</label>
+                            <input type="text" id="contact-name" name="contact-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-email">Your Email</label>
+                            <input type="email" id="contact-email" name="contact-email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="contact-subject">Subject</label>
+                            <input type="text" id="contact-subject" name="contact-subject">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" name="contact-message" rows="5"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.366269835936!2d77.2079144150823!3d28.62873998242354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5e2b0d0e3f%3A0xf9e2a5e8e3a9f6c5!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1624456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Rojgar Saathi</h3>
+                    <p>Connecting job seekers with employment opportunities across India.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#jobs">Job Listings</a></li>
+                        <li><a href="#register">Register</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Job Categories</h3>
+                    <ul>
+                        <li><a href="#">Drivers</a></li>
+                        <li><a href="#">Electricians</a></li>
+                        <li><a href="#">Plumbers</a></li>
+                        <li><a href="#">Data Entry</a></li>
+                        <li><a href="#">Household Help</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Rojgar Saathi. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    // Mobile Menu Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const navItems = document.querySelectorAll('.nav-links li');
+    const navbar = document.querySelector('.navbar');
+    const navbarHeight = navbar.offsetHeight;
+    
+    hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        const icon = hamburger.querySelector('i');
+        
+        if (navLinks.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+            document.body.style.overflow = ''; // Re-enable scrolling
         }
-        
-        function nextSlide() {
-            let newIndex = (currentSlide + 1) % slides.length;
-            showSlide(newIndex);
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Close mobile menu if open
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.querySelector('i').classList.remove('fa-times');
+                    hamburger.querySelector('i').classList.add('fa-bars');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+                
+                // Calculate scroll position with navbar offset
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                
+                // Smooth scroll
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+
+    // Smooth scrolling for home page buttons
+document.querySelectorAll('.hero-content .btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        // Only handle if it's an anchor link
+        if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                // Calculate scroll position with navbar offset
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                
+                // Smooth scroll
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         }
+    });
+});
+
+    // Add active class to current section in navbar
+    const sections = document.querySelectorAll('section');
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+    
+    function updateActiveSection() {
+        let current = '';
+        const scrollPosition = window.scrollY + navbarHeight + 100;
         
-        // Auto-rotate slides
-        function startSlider() {
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-        
-        // Pause on hover
-        const hero = document.querySelector('.hero');
-        hero.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        hero.addEventListener('mouseleave', startSlider);
-        
-        // Manual control
-        controls.forEach((control, index) => {
-            control.addEventListener('click', () => {
-                clearInterval(slideInterval);
-                showSlide(index);
-                startSlider();
-            });
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
         });
         
-        // Initialize
-        showSlide(0);
-        startSlider();
-    </script>
+        navLinksAll.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Navbar scroll effect
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+    
+    // Throttle scroll events for better performance
+    let isScrolling;
+    window.addEventListener('scroll', function() {
+        window.clearTimeout(isScrolling);
+        isScrolling = setTimeout(updateActiveSection, 50);
+    }, false);
+    
+    // Initialize active section on page load
+    updateActiveSection();
+    
+    // Background Slideshow Functionality
+    const backgrounds = document.querySelectorAll('.slide-bg');
+    const controls = document.querySelectorAll('.slider-control');
+    let currentSlide = 0;
+    let slideInterval;
+    
+    function showSlide(index) {
+        // Hide all backgrounds
+        backgrounds.forEach(bg => bg.classList.remove('active'));
+        controls.forEach(control => control.classList.remove('active'));
+        
+        // Show selected background
+        backgrounds[index].classList.add('active');
+        controls[index].classList.add('active');
+        currentSlide = index;
+    }
+    
+    function nextSlide() {
+        let newIndex = (currentSlide + 1) % backgrounds.length;
+        showSlide(newIndex);
+    }
+    
+    // Auto-rotate backgrounds
+    function startSlider() {
+        slideInterval = setInterval(nextSlide, 5000);
+    }
+    
+    // Pause on hover
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    hero.addEventListener('mouseleave', startSlider);
+    
+    // Manual control
+    controls.forEach((control, index) => {
+        control.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            showSlide(index);
+            startSlider();
+        });
+    });
+    
+    // Initialize
+    showSlide(0);
+    startSlider();
+    
+    // Job Filter Functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // In a real implementation, you would filter jobs here
+        });
+    });
+
+    // Handle window resize for responsive adjustments
+    window.addEventListener('resize', function() {
+        // Recalculate navbar height in case it changed
+        navbarHeight = navbar.offsetHeight;
+    });
+</script>
 </body>
 </html>
